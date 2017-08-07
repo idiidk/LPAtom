@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link href="css/launchpadmacros.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LPAtom</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="col s12">
+            <h1 class="title-text">Launchpadmacros Control</h1>
+        </div>
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">build</i>Control</div>
+                <div class="collapsible-body">
+                    <a id="reset-btn" class="waves-effect waves-light btn"><i class="material-icons left">autorenew</i>reset</a>
+                    <a id="visualizer-btn" class="waves-effect waves-light btn"><i class="material-icons left">equalizer</i>toggle visualizer (experimental)</a>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">code</i>Tests</div>
+                <div class="collapsible-body">
+                    <a id="full-test-btn" class="waves-effect waves-light btn"><i class="material-icons left">bug_report</i>do a full test</a>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">settings</i>Config</div>
+                <div class="collapsible-body">
+                    <b>Your current config:</b>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="config-edit" class="materialize-textarea"></textarea>
+                            <label for="config-edit"></label>
+                        </div>
+                        <a id="save-btn" class="waves-effect waves-light btn"><i class="material-icons left">save</i>save</a>
+                        <a id="reload-btn" class="waves-effect waves-light btn"><i class="material-icons left">cached</i>reload</a>
+                        <a id="apply-btn" class="waves-effect waves-light btn"><i class="material-icons left">power_settings_new</i>apply</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="log" class="col s12">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Log</span>
+                    <span id="log-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.jQuery = window.$ = require('jquery');
+        window.Hammer = require('hammerjs');
+    </script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script type="text/javascript" src="js/launchpadmacros.js"></script>
+</body>
+
+</html>

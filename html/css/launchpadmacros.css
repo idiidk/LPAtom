@@ -1,0 +1,12 @@
+.title-text {
+    text-align: center;
+    font-size:6vh;
+}
+
+#log-text {
+    white-space:pre;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
