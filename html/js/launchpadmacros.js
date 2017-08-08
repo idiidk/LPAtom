@@ -18,27 +18,32 @@ var cfg = JSON.parse(fs.readFileSync(config_path, 'UTF8'));
 
 //INIT
 clog('<b>LPAtom - v0.1.2 by idiidk</b>\n');
-$("#reload-btn").on("click", function () {
+
+$("#reload-page-btn").on("click", () => {
+    location.reload();
+});
+
+$("#reload-btn").on("click", () => {
     loadCurrentConfig();
 });
 
-$("#save-btn").on("click", function () {
+$("#save-btn").on("click", () => {
     saveCurrentConfig();
 });
 
-$("#apply-btn").on("click", function () {
+$("#apply-btn").on("click", () => {
     applyCurrentConfig();
 });
 
-$("#full-test-btn").on("click", function () {
+$("#full-test-btn").on("click", () => {
     fullTest();
 });
 
-$("#visualizer-btn").on("click", function () {
+$("#visualizer-btn").on("click", () => {
     toggleVisualizer();
 });
 
-$("#reset-btn").on("click", function () {
+$("#reset-btn").on("click", () => {
     resetLaunchpad();
 });
 
@@ -60,7 +65,7 @@ function reloadMidiIO() {
     clog(' - Selected port: ' + input.getPortName(cfg.inport));
     clog(' - Opening port...');
     input.openPort(cfg.inport);
-    input.on('message', function (deltaTime, message) {
+    input.on('message', (deltaTime, message) => {
         messageIn(deltaTime, message);
     });
 }
@@ -80,7 +85,7 @@ function toggleVisualizer() {
         if (navigator.getUserMedia) {
             navigator.getUserMedia({
                 audio: true
-            }, function (e) {
+            }, (e) => {
                 var audioCtx = new AudioContext();
                 var source = audioCtx.createMediaStreamSource(e)
                 analyser = audioCtx.createAnalyser();
@@ -89,7 +94,7 @@ function toggleVisualizer() {
                 analyser.smoothingTimeConstant = 0.0;
                 frequencyData = new Uint8Array(analyser.frequencyBinCount);
                 renderFrame(frequencyData);
-            }, function (e) {
+            }, (e) => {
                 alert('Error capturing audio.');
             });
         } else {
@@ -224,22 +229,9 @@ function renderFrame(frequencyData) {
         }
     }
     if(visualsEnabled) {
-        setTimeout(function() {
+        setTimeout(() => {
             renderFrame(frequencyData);
         }, 10);
-    }
-}
-
-function midiQueue() {
-    this.messageArray = [];
-    this.addMessageToQueue = function (packet) {
-        this.messageArray.push(packet);
-    }
-    this.sendOut = function () {
-        this.messageArray.array.forEach(function(element) {
-            sendMidiOut(element);
-        }, this);
-        this.messageArray = [];
     }
 }
 
@@ -247,20 +239,20 @@ function fullTest() {
     clog("<b>--- Starting full test - " + new Date() + " ---</b>\n")
     clog("Single led on / off");
     sendMidiOut([144, 96, 15]);
-    setTimeout(function () {
+    setTimeout(() => {
         clog("All leds - brightness low");
         sendMidiOut([144, 96, 0]);
         sendMidiOut([176, 0, 125]);
-        setTimeout(function () {
+        setTimeout(() => {
             clog("All leds - brightness medium");
             sendMidiOut([176, 0, 126]);
-            setTimeout(function () {
+            setTimeout(() => {
                 clog("All leds - brightness high");
                 sendMidiOut([176, 0, 127]);
-                setTimeout(function () {
+                setTimeout(() => {
                     clog("Scrolling text - Hello world!")
                     sendMidiOut([240, 0, 32, 41, 9, 124, 5, 72, 101, 108, 108, 111, 32, 2, 119, 111, 114, 108, 100, 33, 247]);
-                    setTimeout(function () {
+                    setTimeout(() => {
                         sendMidiOut([240, 0, 32, 41, 9, 0, 247]);
                         clog("Resetting Launchpad to default state")
                         sendMidiOut([176, 0, 0]);
@@ -272,8 +264,21 @@ function fullTest() {
     }, 1500);
 }
 
+function midiQueue() {
+    this.messageArray = [];
+    this.addMessageToQueue = (packet) => {
+        this.messageArray.push(packet);
+    }
+    this.sendOut = () => {
+        this.messageArray.array.forEach(function(element) {
+            sendMidiOut(element);
+        }, this);
+        this.messageArray = [];
+    }
+}
+
 function loadCurrentConfig(apply) {
-    fs.readFile("config.json", function (err, data) {
+    fs.readFile("config.json", (err, data) => {
         if (err) throw err;
         $("#config-edit").val(data);
         $("#config-edit").trigger("autoresize");
@@ -285,7 +290,7 @@ function loadCurrentConfig(apply) {
 
 function saveCurrentConfig(apply = false) {
     if ($("#config-edit").val()) {
-        fs.writeFile("config.json", $("#config-edit").val(), function(err) {
+        fs.writeFile("config.json", $("#config-edit").val(), (err) => {
             if(err) throw err;
         });
         loadCurrentConfig(apply);
@@ -304,7 +309,7 @@ function applyCurrentConfig() {
 }
 
 function messageIn(deltaTime, message) {
-
+    sendMidiOut(message);
 }
 
 function sendMidiOut(msg) {

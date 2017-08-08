@@ -3,6 +3,10 @@
     font-size:6vh;
 }
 
+.btn {
+    margin: 5px;
+}
+
 #log-text {
     white-space:pre;
 }
